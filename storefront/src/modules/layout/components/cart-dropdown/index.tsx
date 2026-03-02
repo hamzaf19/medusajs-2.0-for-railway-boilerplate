@@ -81,7 +81,7 @@ const CartDropdown = ({
             className="hover:text-ui-fg-base"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Cart (${totalItems})`}</LocalizedClientLink>
+          >{`Panier (${totalItems})`}</LocalizedClientLink>
         </Popover.Button>
         <Transition
           show={cartDropdownOpen}
@@ -95,11 +95,11 @@ const CartDropdown = ({
         >
           <Popover.Panel
             static
-            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-ui-fg-base"
+            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-neutral-950/95 backdrop-blur-xl border border-white/10 shadow-2xl w-[420px] text-white"
             data-testid="nav-cart-dropdown"
           >
-            <div className="p-4 flex items-center justify-center">
-              <h3 className="text-large-semi">Cart</h3>
+            <div className="p-4 flex items-center justify-center border-b border-white/10">
+              <h3 className="text-sm font-black uppercase italic tracking-widest">Panier</h3>
             </div>
             {cartState && cartState.items?.length ? (
               <>
@@ -130,7 +130,7 @@ const CartDropdown = ({
                           <div className="flex flex-col flex-1">
                             <div className="flex items-start justify-between">
                               <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
-                                <h3 className="text-base-regular overflow-hidden text-ellipsis">
+                                <h3 className="text-sm font-semibold overflow-hidden text-ellipsis text-white">
                                   <LocalizedClientLink
                                     href={`/products/${item.variant?.product?.handle}`}
                                     data-testid="product-link"
@@ -144,10 +144,11 @@ const CartDropdown = ({
                                   data-value={item.variant}
                                 />
                                 <span
+                                  className="text-white/50 text-xs"
                                   data-testid="cart-item-quantity"
                                   data-value={item.quantity}
                                 >
-                                  Quantity: {item.quantity}
+                                  Qté : {item.quantity}
                                 </span>
                               </div>
                               <div className="flex justify-end">
@@ -157,23 +158,23 @@ const CartDropdown = ({
                           </div>
                           <DeleteButton
                             id={item.id}
-                            className="mt-1"
+                            className="mt-1 text-white/40 hover:text-white transition-colors"
                             data-testid="cart-item-remove-button"
                           >
-                            Remove
+                            Supprimer
                           </DeleteButton>
                         </div>
                       </div>
                     ))}
                 </div>
-                <div className="p-4 flex flex-col gap-y-4 text-small-regular">
+                <div className="p-4 flex flex-col gap-y-4 text-small-regular border-t border-white/10">
                   <div className="flex items-center justify-between">
-                    <span className="text-ui-fg-base font-semibold">
-                      Subtotal{" "}
-                      <span className="font-normal">(excl. taxes)</span>
+                    <span className="text-white font-semibold text-sm">
+                      Sous-total{" "}
+                      <span className="font-normal text-white/50">(HT)</span>
                     </span>
                     <span
-                      className="text-large-semi"
+                      className="text-white font-bold text-base"
                       data-testid="cart-subtotal"
                       data-value={subtotal}
                     >
@@ -185,11 +186,11 @@ const CartDropdown = ({
                   </div>
                   <LocalizedClientLink href="/cart" passHref>
                     <Button
-                      className="w-full"
+                      className="w-full h-12 bg-white text-neutral-950 text-xs font-black uppercase italic tracking-widest hover:bg-white/90 rounded-none transition-colors"
                       size="large"
                       data-testid="go-to-cart-button"
                     >
-                      Go to cart
+                      Voir le panier
                     </Button>
                   </LocalizedClientLink>
                 </div>
@@ -197,15 +198,20 @@ const CartDropdown = ({
             ) : (
               <div>
                 <div className="flex py-16 flex-col gap-y-4 items-center justify-center">
-                  <div className="bg-gray-900 text-small-regular flex items-center justify-center w-6 h-6 rounded-full text-white">
+                  <div className="bg-white/10 text-xs flex items-center justify-center w-6 h-6 rounded-full text-white/60">
                     <span>0</span>
                   </div>
-                  <span>Your shopping bag is empty.</span>
+                  <span className="text-white/50 text-sm">Votre panier est vide.</span>
                   <div>
                     <LocalizedClientLink href="/store">
                       <>
-                        <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
+                        <span className="sr-only">Voir tous les produits</span>
+                        <Button
+                          onClick={close}
+                          className="bg-white text-neutral-950 text-xs font-black uppercase italic tracking-widest hover:bg-white/90 rounded-none transition-colors"
+                        >
+                          Explorer la boutique
+                        </Button>
                       </>
                     </LocalizedClientLink>
                   </div>

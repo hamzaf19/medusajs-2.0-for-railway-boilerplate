@@ -6,9 +6,9 @@ import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Strikerz. | Maillots Premium Football & Basketball",
   description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+    "Boutique en ligne de maillots de football et basketball. Équipez-vous aux couleurs de vos équipes préférées.",
 }
 
 export default async function Home({

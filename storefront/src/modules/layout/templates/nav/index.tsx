@@ -1,70 +1,84 @@
 import { Suspense } from "react"
-
-import { listRegions } from "@lib/data/regions"
-import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
-import SideMenu from "@modules/layout/components/side-menu"
 
-export default async function Nav() {
-  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
-
+export default function Nav() {
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
-          <div className="flex-1 basis-0 h-full flex items-center">
-            <div className="h-full">
-              <SideMenu regions={regions} />
-            </div>
-          </div>
+    <div className="sticky top-0 inset-x-0 z-50">
+      <header className="relative h-16 mx-auto border-b border-neutral-200 bg-white/80 backdrop-blur-md transition-colors duration-300">
+        <nav className="content-container flex items-center w-full h-full">
 
-          <div className="flex items-center h-full">
+          {/* GAUCHE - logo */}
+          <div className="flex-1 basis-0 flex items-center">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-ui-fg-base hover:opacity-80 transition-opacity duration-300"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              Strikerz<span className="text-blue-600">.</span>
             </LocalizedClientLink>
           </div>
 
-          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <div className="hidden small:flex items-center gap-x-6 h-full">
-              {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
-                <LocalizedClientLink
-                  className="hover:text-ui-fg-base"
-                  href="/search"
-                  scroll={false}
-                  data-testid="nav-search-link"
-                >
-                  Search
-                </LocalizedClientLink>
-              )}
-              <LocalizedClientLink
-                className="hover:text-ui-fg-base"
-                href="/account"
-                data-testid="nav-account-link"
-              >
-                Account
-              </LocalizedClientLink>
-            </div>
+          {/* CENTRE - navigation */}
+          <div className="hidden small:flex items-center justify-center gap-x-10 h-full">
+            <LocalizedClientLink
+              href="/"
+              className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
+              data-testid="nav-home-link-center"
+            >
+              ACCUEIL
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/store"
+              className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
+              data-testid="nav-store-link-center"
+            >
+              BOUTIQUE
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/search"
+              scroll={false}
+              className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
+              data-testid="nav-search-link-center"
+            >
+              RECHERCHER
+            </LocalizedClientLink>
+            <LocalizedClientLink
+              href="/account"
+              className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
+              data-testid="nav-account-link-center"
+            >
+              COMPTE
+            </LocalizedClientLink>
+          </div>
+
+          {/* DROITE - panier */}
+          <div className="flex-1 basis-0 flex items-center justify-end">
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
                   href="/cart"
+                  className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300"
                   data-testid="nav-cart-link"
                 >
-                  Cart (0)
+                  PANIER (0)
                 </LocalizedClientLink>
               }
             >
-              <CartButton />
+              <CartButtonWrapper />
             </Suspense>
           </div>
+
         </nav>
       </header>
+    </div>
+  )
+}
+
+function CartButtonWrapper() {
+  return (
+    <div className="text-xs font-black italic uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors duration-300">
+      <CartButton />
     </div>
   )
 }

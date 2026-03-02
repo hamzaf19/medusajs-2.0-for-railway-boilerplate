@@ -34,6 +34,21 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        brand: {
+          DEFAULT: "#2563EB",
+          light: "#3B82F6",
+          dark: "#1D4ED8",
+          50: "#EFF6FF",
+          900: "#1E3A8A",
+        },
+        accent: {
+          DEFAULT: "#F97316",
+          dark: "#EA580C",
+        },
+        surface: {
+          dark: "#0A0A0A",
+          card: "#111111",
+        },
       },
       borderRadius: {
         none: "0px",
