@@ -1,12 +1,10 @@
 "use client"
 
 import { Popover, Transition } from "@headlessui/react"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
-import { Text, clx, useToggleState } from "@medusajs/ui"
+import { XMark } from "@medusajs/icons"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
 
 const SideMenuItems = {
@@ -14,11 +12,10 @@ const SideMenuItems = {
   BOUTIQUE: "/store",
   RECHERCHER: "/search",
   COMPTE: "/account",
-  PANIER: "/cart",
 }
 
 const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
-  const toggleState = useToggleState()
+  void regions
 
   return (
     <div className="h-full">
@@ -29,73 +26,80 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
               <div className="relative flex h-full">
                 <Popover.Button
                   data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none text-ui-fg-base font-black italic uppercase tracking-tight"
+                  className="relative h-10 w-10 flex items-center justify-center transition-all ease-out duration-200 focus:outline-none text-ui-fg-base"
+                  aria-label="Ouvrir le menu"
                 >
-                  MENU
+                  <span className="sr-only">Menu</span>
+                  <span className="flex flex-col gap-1">
+                    <span className="block h-0.5 w-5 bg-neutral-900" />
+                    <span className="block h-0.5 w-5 bg-neutral-900" />
+                    <span className="block h-0.5 w-5 bg-neutral-900" />
+                  </span>
                 </Popover.Button>
               </div>
 
               <Transition
                 show={open}
                 as={Fragment}
-                enter="transition ease-out duration-150"
+                enter="transition ease-out duration-300"
                 enterFrom="opacity-0"
-                enterTo="opacity-100 backdrop-blur-2xl"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 backdrop-blur-2xl"
+                enterTo="opacity-100"
+                leave="transition ease-in duration-200"
+                leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Popover.Panel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-30 inset-x-0 text-sm text-white m-2 bg-neutral-950/95 backdrop-blur-xl">
+                <div className="fixed inset-0 z-[80]">
                   <div
-                    data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-transparent rounded-rounded justify-between p-6"
+                    className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                    onClick={close}
+                    aria-hidden="true"
+                  />
+
+                  <Transition.Child
+                    as={Fragment}
+                    enter="transition ease-out duration-300"
+                    enterFrom="translate-x-full"
+                    enterTo="translate-x-0"
+                    leave="transition ease-in duration-200"
+                    leaveFrom="translate-x-0"
+                    leaveTo="translate-x-full"
                   >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
-                        <XMark />
-                      </button>
-                    </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
-                        return (
-                          <li key={name}>
-                            <LocalizedClientLink
-                              href={href}
-                              className="text-5xl md:text-6xl font-black italic uppercase tracking-tight leading-none text-white hover:opacity-90 transition-colors duration-200"
-                              onClick={close}
-                              data-testid={`${name.toLowerCase()}-link`}
-                            >
-                              {name}
-                            </LocalizedClientLink>
-                          </li>
-                        )
-                      })}
-                    </ul>
-                    <div className="flex flex-col gap-y-6">
+                    <Popover.Panel className="fixed inset-y-0 right-0 h-screen w-[80vw] max-w-sm bg-neutral-950 border-l border-neutral-800 text-white">
                       <div
-                        className="flex justify-between"
-                        onMouseEnter={toggleState.open}
-                        onMouseLeave={toggleState.close}
+                        data-testid="nav-menu-popup"
+                        className="flex flex-col h-full px-6 py-8"
                       >
-                        {regions && (
-                          <CountrySelect
-                            toggleState={toggleState}
-                            regions={regions}
-                          />
-                        )}
-                        <ArrowRightMini
-                          className={clx(
-                            "transition-transform duration-150",
-                            toggleState.state ? "-rotate-90" : ""
-                          )}
-                        />
+                        <div className="flex justify-end" id="xmark">
+                          <button
+                            data-testid="close-menu-button"
+                            onClick={close}
+                            className="h-10 w-10 flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+                            aria-label="Fermer le menu"
+                          >
+                            <XMark />
+                          </button>
+                        </div>
+
+                        <ul className="flex-1 flex flex-col items-start justify-center gap-y-8 mt-4">
+                          {Object.entries(SideMenuItems).map(([name, href]) => {
+                            return (
+                              <li key={name}>
+                                <LocalizedClientLink
+                                  href={href}
+                                  className="text-lg md:text-xl font-bold uppercase italic tracking-[0.2em] text-neutral-400 hover:text-white transition-colors"
+                                  onClick={close}
+                                  data-testid={`${name.toLowerCase()}-link`}
+                                >
+                                  {name}
+                                </LocalizedClientLink>
+                              </li>
+                            )
+                          })}
+                        </ul>
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © 2026 Strikerz. Tous droits réservés.
-                      </Text>
-                    </div>
-                  </div>
-                </Popover.Panel>
+                    </Popover.Panel>
+                  </Transition.Child>
+                </div>
               </Transition>
             </>
           )}

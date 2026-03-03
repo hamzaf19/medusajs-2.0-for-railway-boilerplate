@@ -3,7 +3,7 @@
 import { Popover, Transition } from "@headlessui/react"
 import { Button } from "@medusajs/ui"
 import { usePathname } from "next/navigation"
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, ReactNode, useEffect, useRef, useState } from "react"
 
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
@@ -15,8 +15,10 @@ import Thumbnail from "@modules/products/components/thumbnail"
 
 const CartDropdown = ({
   cart: cartState,
+  trigger,
 }: {
   cart?: HttpTypes.StoreCart | null
+  trigger?: ReactNode
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
@@ -77,11 +79,15 @@ const CartDropdown = ({
     >
       <Popover className="relative h-full">
         <Popover.Button className="h-full">
-          <LocalizedClientLink
-            className="hover:text-ui-fg-base"
-            href="/cart"
-            data-testid="nav-cart-link"
-          >{`Panier (${totalItems})`}</LocalizedClientLink>
+          {trigger ? (
+            trigger
+          ) : (
+            <LocalizedClientLink
+              className="hover:text-ui-fg-base"
+              href="/cart"
+              data-testid="nav-cart-link"
+            >{`Panier (${totalItems})`}</LocalizedClientLink>
+          )}
         </Popover.Button>
         <Transition
           show={cartDropdownOpen}
